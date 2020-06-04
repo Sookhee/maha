@@ -19,7 +19,9 @@ package kr.hs.emirim.sookhee.maha;
 
         import de.hdodenhof.circleimageview.CircleImageView;
         import kr.hs.emirim.sookhee.maha.adapter.HobbyCircleAdapter;
+        import kr.hs.emirim.sookhee.maha.adapter.PostSmallAdapter;
         import kr.hs.emirim.sookhee.maha.model.hobbyData;
+        import kr.hs.emirim.sookhee.maha.model.postData;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,38 +31,55 @@ public class MainActivity extends AppCompatActivity {
     LinearLayoutManager hobbyLayoutManager;
     HobbyCircleAdapter hobbyAdapter;
 
+    RecyclerView postRecyclerView;
+    LinearLayoutManager postLayoutManager;
+    PostSmallAdapter postAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // View 설정
         civProfileImage = (CircleImageView)findViewById(R.id.mainProfileImage);
 
+        // Firebase Query
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = database.getReference().child("hobby");
-        Query shelterQuery = mRef;
+        DatabaseReference hobbyRef = database.getReference().child("hobby");
+        Query hobbyQuery = hobbyRef;
+        DatabaseReference postRef = database.getReference().child("post");
+        Query postQuery = postRef;
 
+        // Hobby RecyclerView
         hobbyRecyclerView = (RecyclerView)findViewById(R.id.hobbyRecyclerView);
         hobbyAdapter = new HobbyCircleAdapter(this);
         hobbyLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         hobbyRecyclerView.setLayoutManager(hobbyLayoutManager);
         hobbyRecyclerView.setAdapter(hobbyAdapter);
 
-        shelterQuery.addChildEventListener(new ChildEventListener() {
+        // Post RecyclerView
+        postRecyclerView = (RecyclerView)findViewById(R.id.postRecyclerView);
+        postAdapter = new PostSmallAdapter(this);
+        postLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        postRecyclerView.setLayoutManager(postLayoutManager);
+        postRecyclerView.setAdapter(postAdapter);
+
+        // Hobby List
+        hobbyQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String key = dataSnapshot.getKey();
-                hobbyData shelter = dataSnapshot.getValue(hobbyData.class);
+                hobbyData hobby = dataSnapshot.getValue(hobbyData.class);
 
-                hobbyAdapter.addDataAndUpdate(key, shelter);
+                hobbyAdapter.addDataAndUpdate(key, hobby);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String key = dataSnapshot.getKey();
-                hobbyData shelter = dataSnapshot.getValue(hobbyData.class);
+                hobbyData hobby = dataSnapshot.getValue(hobbyData.class);
 
-                hobbyAdapter.addDataAndUpdate(key, shelter);
+                hobbyAdapter.addDataAndUpdate(key, hobby);
             }
 
             @Override
@@ -80,6 +99,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Post List
+        postQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String key = dataSnapshot.getKey();
+                postData post = dataSnapshot.getValue(postData.class);
+
+                postAdapter.addDataAndUpdate(key, post);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String key = dataSnapshot.getKey();
+                postData post = dataSnapshot.getValue(postData.class);
+
+                postAdapter.addDataAndUpdate(key, post);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                String key = dataSnapshot.getKey();
+                postAdapter.deleteDataAndUpdate(key);
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        // Profile Click Event
         civProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -77,10 +77,11 @@
                 app:shadowMargin="10dp"
                 app:shadowRadius="14dp">
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/default_profile" />
             </com.loopeer.shadow.ShadowView>
 
@@ -161,6 +162,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/TextView33"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/notosanscjkkr_bold"
+                android:includeFontPadding="false"
+                android:paddingLeft="16dp"
+                android:text="나의 게시물"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/profileMyPostRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp" />
 
         </LinearLayout>
     </ScrollView>

@@ -1,26 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        android:id="@+id/postMainImg"
+        android:layout_width="83dp"
+        android:layout_height="83dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView5"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_marginStart="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/postMainImg"
+        app:layout_constraintTop_toTopOf="@+id/postMainImg">
 
-    <TextView
-        android:id="@+id/textView7"
+        <TextView
+            android:id="@+id/postHobbyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosanscjkkr_medium"
+            android:includeFontPadding="false"
+            android:text="드론"
+            android:textColor="@color/purple"
+            android:textSize="10sp" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="1dp"
+            android:layout_height="12dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/warm_gray" />
+
+        <TextView
+            android:id="@+id/postWriter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosanscjkkr_medium"
+            android:includeFontPadding="false"
+            android:text="마이너"
+            android:textColor="@color/warm_gray"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_marginStart="16dp"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/postMainImg"
+        app:layout_constraintStart_toEndOf="@+id/postMainImg">
+
+        <ImageView
+            android:id="@+id/postLikeHeart"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            app:srcCompat="@drawable/post_heart_false" />
+
+        <TextView
+            android:id="@+id/postLikeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:fontFamily="@font/notosanscjkkr_medium"
+            android:includeFontPadding="false"
+            android:text="363"
+            android:textColor="@color/warm_gray"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/postViewCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/notosanscjkkr_regular"
+            android:includeFontPadding="false"
+            android:text="2.655"
+            android:textColor="@color/warm_gray"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:fontFamily="@font/notosanscjkkr_regular"
+            android:includeFontPadding="false"
+            android:text="view"
+            android:textColor="@color/warm_gray"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/postTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/notosanscjkkr_bold"
+        android:gravity="start"
+        android:includeFontPadding="false"
+        android:maxLines="2"
+        android:text="DJI 드론 asdfasdfasdfasdfasdasdasdasdf 10asdfasdfasdf"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/postMainImg"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

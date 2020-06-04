@@ -13,6 +13,7 @@ import org.w3c.dom.Text;
 public class HobbyActivity extends AppCompatActivity {
     Intent intent;
     TextView tvTitle;
+    TextView tvGoWrite;
 
     String hobbyName;
     int hobbyId;
@@ -28,6 +29,16 @@ public class HobbyActivity extends AppCompatActivity {
 
         tvTitle = (TextView)findViewById(R.id.hobbyTitle);
         tvTitle.setText(hobbyName);
+
+        tvGoWrite = (TextView)findViewById(R.id.hobbyWrite);
+        tvGoWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(v.getContext(), WriteActivity.class);
+                v.getContext().startActivity(intent);
+            }
+        });
 
 
     }
