@@ -66,6 +66,8 @@ public class HobbyActivity extends AppCompatActivity {
         postRecyclerView = (RecyclerView)findViewById(R.id.postRecyclerView);
         postAdapter = new PostLargeAdapter(this);
         postLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        postLayoutManager.setReverseLayout(true);
+        postLayoutManager.setStackFromEnd(true);
         postRecyclerView.setLayoutManager(postLayoutManager);
         postRecyclerView.setAdapter(postAdapter);
 

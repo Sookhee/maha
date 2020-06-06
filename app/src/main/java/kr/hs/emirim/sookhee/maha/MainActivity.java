@@ -7,6 +7,7 @@ package kr.hs.emirim.sookhee.maha;
 
         import android.content.Intent;
         import android.os.Bundle;
+        import android.util.Log;
         import android.view.View;
         import android.widget.Toast;
 
@@ -62,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         postRecyclerView = (RecyclerView)findViewById(R.id.postRecyclerView);
         postAdapter = new PostSmallAdapter(this);
         postLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        postLayoutManager.setReverseLayout(true);
+        postLayoutManager.setStackFromEnd(true);
         postRecyclerView.setLayoutManager(postLayoutManager);
         postRecyclerView.setAdapter(postAdapter);
 

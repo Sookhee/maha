@@ -7,6 +7,7 @@ public class postData {
     private int hobbyId;
     private int likeCount;
     private int viewCount;
+    private long time;
     private String title;
     private String content;
     private String hobbyName;
@@ -16,11 +17,12 @@ public class postData {
 
 
     public postData(){}
-    public postData(int postId, int hobbyId, int likeCount, int viewCount, String title, String content, String hobbyName, String writer, String writerProfile, ArrayList<String> imgList){
+    public postData(int postId, int hobbyId, int likeCount, int viewCount, long time, String title, String content, String hobbyName, String writer, String writerProfile, ArrayList<String> imgList){
         this.postId = postId;
         this.hobbyId = hobbyId;
         this.likeCount = likeCount;
         this.viewCount = viewCount;
+        this.time = time;
         this.title = title;
         this.content = content;
         this.hobbyName = hobbyName;
@@ -59,6 +61,14 @@ public class postData {
 
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 
     public String getTitle() {

@@ -43,6 +43,8 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
     public void onBindViewHolder(@NonNull CustomViewHolder holder, final int position) {
         postData post = (postData) mData.values().toArray()[position];
 
+        holder.postId = post.getPostId();
+
         ArrayList<String> imgList = post.getImg();
         String img = imgList.get(0);
 
@@ -69,8 +71,7 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
         TextView tvViewCount;
         ImageView ivMainImg;
 
-        int hobbyId;
-        String hobbyName;
+        int postId;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
@@ -86,8 +87,8 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent;
-                    intent = new Intent(v.getContext(), PostActivity.class);
+                    Intent intent = new Intent(v.getContext(), PostActivity.class);
+                    intent.putExtra("postId", postId);
                     v.getContext().startActivity(intent);
                 }
             });
