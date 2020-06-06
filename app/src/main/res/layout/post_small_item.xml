@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="@+id/shadowView2">
 
         <TextView
-            android:id="@+id/postHobbyName"
+            android:id="@+id/hobbyName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/notosanscjkkr_medium"

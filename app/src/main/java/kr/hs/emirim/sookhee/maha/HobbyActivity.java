@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.annotations.Nullable;
+import com.loopeer.shadow.ShadowView;
 
 import org.w3c.dom.Text;
 
@@ -31,11 +32,12 @@ public class HobbyActivity extends AppCompatActivity {
     Intent intent;
     TextView tvTitle;
     TextView tvGoWrite;
-    NestedScrollView svScrollView;
     ConstraintLayout clSearchBar;
+    ShadowView svAddHobby;
 
     String hobbyName;
     int hobbyId;
+    boolean isAddHobby;
 
     RecyclerView postRecyclerView;
     LinearLayoutManager postLayoutManager;
@@ -49,11 +51,12 @@ public class HobbyActivity extends AppCompatActivity {
         intent = getIntent();
         hobbyName = intent.getStringExtra("hobbyName");
         hobbyId = intent.getIntExtra("hobbyId", 1);
+        isAddHobby = intent.getBooleanExtra("isAddHobby", false);
 
         tvTitle = (TextView)findViewById(R.id.hobbyTitle);
         tvGoWrite = (TextView)findViewById(R.id.hobbyWrite);
-        svScrollView = (NestedScrollView)findViewById(R.id.hobbyScrollView);
         clSearchBar = (ConstraintLayout)findViewById(R.id.hobbyTagSearchLayout);
+        svAddHobby = (ShadowView)findViewById(R.id.hobbyAdd);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference postRef = database.getReference().child("post");
@@ -106,6 +109,19 @@ public class HobbyActivity extends AppCompatActivity {
             }
         });
 
+        if(isAddHobby == false){
+            svAddHobby.setVisibility(View.GONE);
+        }
+        else{
+            svAddHobby.setVisibility(View.VISIBLE);
+        }
+        svAddHobby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "add hobby!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         tvGoWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +138,6 @@ public class HobbyActivity extends AppCompatActivity {
             }
         });
 
-        svScrollView.fullScroll(ScrollView.FOCUS_UP);
     }
 
     public void back(View v){

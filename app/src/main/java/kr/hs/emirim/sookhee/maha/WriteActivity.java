@@ -21,7 +21,7 @@ public class WriteActivity extends AppCompatActivity {
         Date currentTime = Calendar.getInstance().getTime();
         String date = new SimpleDateFormat("yyyy.MM.dd.", Locale.getDefault()).format(currentTime);
         long curTime = System.currentTimeMillis();
-        
+
     }
 
     public void back(View v){

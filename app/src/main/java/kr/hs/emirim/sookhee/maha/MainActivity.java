@@ -7,9 +7,7 @@ package kr.hs.emirim.sookhee.maha;
 
         import android.content.Intent;
         import android.os.Bundle;
-        import android.util.Log;
         import android.view.View;
-        import android.widget.Toast;
 
         import com.google.firebase.database.ChildEventListener;
         import com.google.firebase.database.DataSnapshot;
@@ -26,9 +24,6 @@ package kr.hs.emirim.sookhee.maha;
         import kr.hs.emirim.sookhee.maha.model.postData;
 
 public class MainActivity extends AppCompatActivity {
-
-    CircleImageView civProfileImage;
-
     RecyclerView hobbyRecyclerView;
     LinearLayoutManager hobbyLayoutManager;
     HobbyCircleAdapter hobbyAdapter;
@@ -41,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // View 설정
-        civProfileImage = (CircleImageView)findViewById(R.id.mainProfileImage);
 
         // Firebase Query
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -67,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         postLayoutManager.setStackFromEnd(true);
         postRecyclerView.setLayoutManager(postLayoutManager);
         postRecyclerView.setAdapter(postAdapter);
+
 
         // Hobby List
         hobbyQuery.addChildEventListener(new ChildEventListener() {
@@ -137,14 +130,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        // Profile Click Event
-        civProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
     }
+
+    public void clickProfile(View v){
+        Intent intent;
+        intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        startActivity(intent);
+    }
+
 }

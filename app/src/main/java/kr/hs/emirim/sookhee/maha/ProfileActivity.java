@@ -26,10 +26,6 @@ import kr.hs.emirim.sookhee.maha.model.hobbyData;
 import kr.hs.emirim.sookhee.maha.model.postData;
 
 public class ProfileActivity extends AppCompatActivity {
-    ImageView ivSetting;
-    LinearLayout llGoHobbyList;
-    TextView tvGoHobbyAdd;
-
     RecyclerView hobbyRecyclerView;
     LinearLayoutManager hobbyLayoutManager;
     HobbyCircleAdapter hobbyAdapter;
@@ -42,10 +38,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        ivSetting = (ImageView)findViewById(R.id.setting);
-        llGoHobbyList = (LinearLayout)findViewById(R.id.profileMyHobbyListGo);
-        tvGoHobbyAdd = (TextView)findViewById(R.id.hobbyAdd);
 
         // Firebase Query
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -137,33 +129,27 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
-
-        ivSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        llGoHobbyList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HobbyListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        tvGoHobbyAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HobbyAddActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     public void back(View v){
         super.onBackPressed();
+    }
+
+    public void clickSetting(View v){
+        Intent intent;
+        intent = new Intent(getApplicationContext(), SettingActivity.class);
+        startActivity(intent);
+    }
+
+    public void clickHobbyAdd(View v){
+        Intent intent;
+        intent = new Intent(getApplicationContext(), HobbyAddActivity.class);
+        startActivity(intent);
+    }
+
+    public void clickHobbyList(View v){
+        Intent intent;
+        intent = new Intent(getApplicationContext(), HobbyListActivity.class);
+        startActivity(intent);
     }
 }

@@ -21,7 +21,7 @@ import kr.hs.emirim.sookhee.maha.R;
 import kr.hs.emirim.sookhee.maha.model.postData;
 
 public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.CustomViewHolder> {
-
+    Intent intent;
     private Context mCtx;
     private HashMap<String, postData> mData;
 
@@ -78,7 +78,7 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
 
             pView = itemView;
             tvTitle = (TextView)pView.findViewById(R.id.postTitle);
-            tvHobby = (TextView)pView.findViewById(R.id.postHobbyName) ;
+            tvHobby = (TextView)pView.findViewById(R.id.hobbyName) ;
             tvWriter = (TextView)pView.findViewById(R.id.postWriter);
             tvLikeCount = (TextView)pView.findViewById(R.id.postLikeCount);
             tvViewCount = (TextView)pView.findViewById(R.id.postViewCount);
@@ -87,7 +87,7 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), PostActivity.class);
+                    intent = new Intent(v.getContext(), PostActivity.class);
                     intent.putExtra("postId", postId);
                     v.getContext().startActivity(intent);
                 }

@@ -23,6 +23,7 @@ import kr.hs.emirim.sookhee.maha.model.postData;
 
 public class PostLargeAdapter extends RecyclerView.Adapter<PostLargeAdapter.CustomViewHolder> {
 
+    Intent intent;
     private Context mCtx;
     private HashMap<String, postData> mData;
 
@@ -123,7 +124,7 @@ public class PostLargeAdapter extends RecyclerView.Adapter<PostLargeAdapter.Cust
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), PostActivity.class);
+                    intent = new Intent(v.getContext(), PostActivity.class);
                     intent.putExtra("postId", postId);
                     v.getContext().startActivity(intent);
                 }

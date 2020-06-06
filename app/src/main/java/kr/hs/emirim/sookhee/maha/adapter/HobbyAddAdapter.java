@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,16 +17,17 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 
 import kr.hs.emirim.sookhee.maha.HobbyActivity;
+import kr.hs.emirim.sookhee.maha.HobbyAddActivity;
 import kr.hs.emirim.sookhee.maha.R;
 import kr.hs.emirim.sookhee.maha.model.hobbyData;
 
-public class HobbyCircleAdapter extends RecyclerView.Adapter<HobbyCircleAdapter.CustomViewHolder> {
+public class HobbyAddAdapter extends RecyclerView.Adapter<HobbyAddAdapter.CustomViewHolder> {
 
     Intent intent;
     private Context mCtx;
     private HashMap<String, hobbyData> mData;
 
-    public HobbyCircleAdapter(Context mCtx) {
+    public HobbyAddAdapter(Context mCtx) {
         this.mCtx = mCtx;
         mData = new HashMap<>();
     }
@@ -33,8 +35,7 @@ public class HobbyCircleAdapter extends RecyclerView.Adapter<HobbyCircleAdapter.
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mCtx).inflate(R.layout.circle_hobby_item, parent, false);
-
+        View v = LayoutInflater.from(mCtx).inflate(R.layout.hobby_add_item, parent, false);
 
         return new CustomViewHolder(v);
     }
@@ -48,7 +49,6 @@ public class HobbyCircleAdapter extends RecyclerView.Adapter<HobbyCircleAdapter.
         holder.hobbyName = hobby.getName();
 
         holder.tvName.setText(hobby.getName());
-        holder.tvMemberCount.setText(hobby.getMemberCount() + "");
         Picasso.get().load(img).into(holder.ivHobby);
     }
 
@@ -61,7 +61,6 @@ public class HobbyCircleAdapter extends RecyclerView.Adapter<HobbyCircleAdapter.
 
         View pView;
         TextView tvName;
-        TextView tvMemberCount;
         ImageView ivHobby;
 
         int hobbyId;
@@ -72,7 +71,6 @@ public class HobbyCircleAdapter extends RecyclerView.Adapter<HobbyCircleAdapter.
 
             pView = itemView;
             tvName = itemView.findViewById(R.id.hobbyName);
-            tvMemberCount = itemView.findViewById(R.id.hobbyMemberCount);
             ivHobby = itemView.findViewById(R.id.hobbyImage);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +79,7 @@ public class HobbyCircleAdapter extends RecyclerView.Adapter<HobbyCircleAdapter.
                     intent = new Intent(v.getContext(), HobbyActivity.class);
                     intent.putExtra("hobbyId", hobbyId);
                     intent.putExtra("hobbyName", hobbyName);
-                    intent.putExtra("isAddHobby", false);
+                    intent.putExtra("isAddHobby", true);
                     v.getContext().startActivity(intent);
                 }
             });
