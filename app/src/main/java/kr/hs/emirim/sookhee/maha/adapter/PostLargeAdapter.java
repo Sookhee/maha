@@ -2,11 +2,13 @@ package kr.hs.emirim.sookhee.maha.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,12 +22,12 @@ import kr.hs.emirim.sookhee.maha.PostActivity;
 import kr.hs.emirim.sookhee.maha.R;
 import kr.hs.emirim.sookhee.maha.model.postData;
 
-public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.CustomViewHolder> {
+public class PostLargeAdapter extends RecyclerView.Adapter<PostLargeAdapter.CustomViewHolder> {
 
     private Context mCtx;
     private HashMap<String, postData> mData;
 
-    public PostSmallAdapter(Context mCtx) {
+    public PostLargeAdapter(Context mCtx) {
         this.mCtx = mCtx;
         mData = new HashMap<>();
     }
@@ -33,8 +35,7 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mCtx).inflate(R.layout.post_small_item, parent, false);
-
+        View v = LayoutInflater.from(mCtx).inflate(R.layout.post_large_item, parent, false);
 
         return new CustomViewHolder(v);
     }
@@ -44,14 +45,17 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
         postData post = (postData) mData.values().toArray()[position];
 
         ArrayList<String> imgList = post.getImg();
-        String img = imgList.get(0);
+        String mainImg = imgList.get(0);
+        String profileImg = post.getWriterProfile();
 
         holder.tvTitle.setText(post.getTitle());
-        holder.tvHobby.setText(post.getHobbyName());
+        holder.tvContent.setText(post.getContent());
         holder.tvWriter.setText(post.getWriter());
         holder.tvLikeCount.setText(post.getLikeCount() + "");
         holder.tvViewCount.setText(post.getViewCount() + "");
-        Picasso.get().load(img).into(holder.ivMainImg);
+        holder.tvTime.setText("4분 전");
+        Picasso.get().load(mainImg).into(holder.ivMainImg);
+        Picasso.get().load(profileImg).into(holder.ivWriterProfile);
     }
 
     @Override
@@ -59,15 +63,17 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
         return mData.size();
     }
 
-    class CustomViewHolder extends RecyclerView.ViewHolder{
+    class CustomViewHolder extends RecyclerView.ViewHolder {
 
         View pView;
         TextView tvTitle;
-        TextView tvHobby;
+        TextView tvContent;
         TextView tvWriter;
         TextView tvLikeCount;
         TextView tvViewCount;
+        TextView tvTime;
         ImageView ivMainImg;
+        ImageView ivWriterProfile;
 
         int hobbyId;
         String hobbyName;
@@ -76,12 +82,14 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
             super(itemView);
 
             pView = itemView;
-            tvTitle = (TextView)pView.findViewById(R.id.postTitle);
-            tvHobby = (TextView)pView.findViewById(R.id.postHobbyName) ;
-            tvWriter = (TextView)pView.findViewById(R.id.postWriter);
-            tvLikeCount = (TextView)pView.findViewById(R.id.postLikeCount);
-            tvViewCount = (TextView)pView.findViewById(R.id.postViewCount);
-            ivMainImg = (ImageView)pView.findViewById(R.id.postMainImage);
+            tvTitle = (TextView) pView.findViewById(R.id.postTitle);
+            tvContent = (TextView)pView.findViewById(R.id.postContent);
+            tvWriter = (TextView) pView.findViewById(R.id.postWriter);
+            tvLikeCount = (TextView) pView.findViewById(R.id.postLikeCount);
+            tvViewCount = (TextView) pView.findViewById(R.id.postViewCount);
+            tvTime = (TextView)pView.findViewById(R.id.postTime);
+            ivMainImg = (ImageView) pView.findViewById(R.id.postMainImage);
+            ivWriterProfile = (ImageView)pView.findViewById(R.id.postWriterProfile);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,12 +103,12 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
 
     }
 
-    public void addDataAndUpdate(String key, postData p){
+    public void addDataAndUpdate(String key, postData p) {
         mData.put(key, p);
         notifyDataSetChanged();
     }
 
-    public void deleteDataAndUpdate(String key){
+    public void deleteDataAndUpdate(String key) {
         mData.remove(key);
         notifyDataSetChanged();
     }

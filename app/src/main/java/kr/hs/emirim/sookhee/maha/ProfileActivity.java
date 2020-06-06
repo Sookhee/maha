@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +28,7 @@ import kr.hs.emirim.sookhee.maha.model.postData;
 public class ProfileActivity extends AppCompatActivity {
     ImageView ivSetting;
     LinearLayout llGoHobbyList;
+    TextView tvGoHobbyAdd;
 
     RecyclerView hobbyRecyclerView;
     LinearLayoutManager hobbyLayoutManager;
@@ -43,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         ivSetting = (ImageView)findViewById(R.id.setting);
         llGoHobbyList = (LinearLayout)findViewById(R.id.profileMyHobbyListGo);
+        tvGoHobbyAdd = (TextView)findViewById(R.id.hobbyAdd);
 
         // Firebase Query
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -147,6 +150,14 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HobbyListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tvGoHobbyAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HobbyAddActivity.class);
                 startActivity(intent);
             }
         });

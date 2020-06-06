@@ -3,27 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="24dp">
 
-
-    <ImageView
-        android:id="@+id/postMainImg"
-        android:layout_width="83dp"
-        android:layout_height="83dp"
-        android:scaleType="centerCrop"
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/shadowView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cornerRadius="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/postMainImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop" />
+
+    </com.loopeer.shadow.ShadowView>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintStart_toEndOf="@+id/postMainImg"
-        app:layout_constraintTop_toTopOf="@+id/postMainImg">
+        app:layout_constraintStart_toEndOf="@+id/shadowView2"
+        app:layout_constraintTop_toTopOf="@+id/shadowView2">
 
         <TextView
             android:id="@+id/postHobbyName"
@@ -59,11 +67,11 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:gravity="bottom"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/postMainImg"
-        app:layout_constraintStart_toEndOf="@+id/postMainImg">
+        app:layout_constraintBottom_toBottomOf="@+id/shadowView2"
+        app:layout_constraintStart_toEndOf="@+id/shadowView2">
 
         <ImageView
             android:id="@+id/postLikeHeart"
@@ -109,7 +117,8 @@
         android:id="@+id/postTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:fontFamily="@font/notosanscjkkr_bold"
         android:gravity="start"
@@ -118,9 +127,9 @@
         android:text="DJI 드론 asdfasdfasdfasdfasdasdasdasdf 10asdfasdfasdf"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/postMainImg"
+        app:layout_constraintStart_toEndOf="@+id/shadowView2"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
