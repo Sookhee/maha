@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginRight="16dp"
-    android:layout_marginBottom="16dp">
+    android:layout_marginBottom="16dp"
+    android:background="@color/white">
 
     <com.loopeer.shadow.ShadowView
         android:id="@+id/shadowView3"

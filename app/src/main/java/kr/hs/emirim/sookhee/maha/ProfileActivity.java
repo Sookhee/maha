@@ -44,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         DatabaseReference hobbyRef = database.getReference().child("hobby");
         Query hobbyQuery = hobbyRef;
         DatabaseReference postRef = database.getReference().child("post");
-        Query postQuery = postRef;
+        Query postQuery = postRef.orderByChild("writerId").equalTo(1);
 
         // Hobby RecyclerView
         hobbyRecyclerView = (RecyclerView)findViewById(R.id.profileMyHobbyRecyclerView);
@@ -58,6 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
         postAdapter = new PostSmallAdapter(this);
         postLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         postRecyclerView.setLayoutManager(postLayoutManager);
+        postLayoutManager.setReverseLayout(true);
+        postLayoutManager.setStackFromEnd(true);
         postRecyclerView.setAdapter(postAdapter);
 
         // Hobby List

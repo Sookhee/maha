@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@color/white">
+
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/shadow_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:elevation="10dp"
+        app:cornerRadius="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shadowColor="#2e8c26b9"
+        app:shadowDy="3"
+        app:shadowMargin="6dp"
+        app:shadowRadius="14dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/hobbyImage"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_profile" />
+
+    </com.loopeer.shadow.ShadowView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/shadow_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/shadow_view"
+        app:layout_constraintTop_toTopOf="@+id/shadow_view">
+
+        <TextView
+            android:id="@+id/hobbyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosanscjkkr_bold"
+            android:includeFontPadding="false"
+            android:text="취미명"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hobbyMemberCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosanscjkkr_regular"
+                android:includeFontPadding="false"
+                android:text="3213"
+                android:textColor="@color/warm_gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/notosanscjkkr_regular"
+                android:includeFontPadding="false"
+                android:text="명"
+                android:textColor="@color/warm_gray"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/hobbyListItemLayer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#149d3cc8"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,7 +60,7 @@ public class HobbyActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference postRef = database.getReference().child("post");
-        Query postQuery = postRef;
+        Query postQuery = postRef.orderByChild("hobbyId").equalTo(hobbyId);
 
         // Hobby 액티비티 Top 네비게이션 텍스트 설정
         tvTitle.setText(hobbyName);
@@ -111,9 +111,11 @@ public class HobbyActivity extends AppCompatActivity {
 
         if(isAddHobby == false){
             svAddHobby.setVisibility(View.GONE);
+            tvGoWrite.setVisibility(View.GONE);
         }
         else{
             svAddHobby.setVisibility(View.VISIBLE);
+            tvGoWrite.setVisibility(View.VISIBLE);
         }
         svAddHobby.setOnClickListener(new View.OnClickListener() {
             @Override
