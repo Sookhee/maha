@@ -2,16 +2,13 @@ package kr.hs.emirim.sookhee.maha;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,12 +22,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.SimpleTimeZone;
+
+import kr.hs.emirim.sookhee.maha.adapter.TagAdapter;
 
 public class PostActivity extends AppCompatActivity {
     Intent intent;
@@ -44,6 +38,10 @@ public class PostActivity extends AppCompatActivity {
     TextView tvLikeCount;
     TextView tvViewCount;
     LinearLayout llPostImageList;
+
+    RecyclerView tagRecyclerView;
+    StaggeredGridLayoutManager tagLayoutManager;
+    TagAdapter tagAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +58,21 @@ public class PostActivity extends AppCompatActivity {
         tvLikeCount = (TextView)findViewById(R.id.postLikeCount);
         tvViewCount = (TextView)findViewById(R.id.postViewCount);
 
+        // Hobby RecyclerView
+        tagRecyclerView = (RecyclerView)findViewById(R.id.tagRecyclerView);
+        tagLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+        tagRecyclerView.setLayoutManager(tagLayoutManager);
+
         llPostImageList = (LinearLayout)findViewById(R.id.postImageList);
 
         // Firebase Query
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference postRef = database.getReference().child("post");
         Query postQuery = postRef.child(String.valueOf(postId));
+        DatabaseReference tagRef = database.getReference().child("post");
+        Query tagQuery = tagRef.child(String.valueOf(postId)).child("tag");
 
-        postRef.child(String.valueOf(postId)).addValueEventListener(new ValueEventListener() {
+        postQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 tvTitle.setText(dataSnapshot.child("title").getValue(String.class));
@@ -101,6 +106,21 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
+        tagQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ArrayList<String> values = (ArrayList<String>) dataSnapshot.getValue();
+                tagRecyclerView.setAdapter(new TagAdapter(values));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                System.out.println("Failed to read value." + error.toException());
+            }
+        });
+
     }
 
     public void back(View v){
@@ -111,7 +131,7 @@ public class PostActivity extends AppCompatActivity {
         llPostImageList.removeAllViews();
         for(int i = 0; i < postImageList.size(); i++){
             ImageView iv = new ImageView(this);
-            Picasso.get().load(postImageList.get(imgCnt)).into(iv);
+            Picasso.get().load(postImageList.get(i)).into(iv);
             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             iv.setPadding(0, (int)convertDpToPixel(16), 0, 0);
             llPostImageList.addView(iv);

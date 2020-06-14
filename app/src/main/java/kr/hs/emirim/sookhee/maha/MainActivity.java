@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         postRecyclerView = (RecyclerView)findViewById(R.id.postRecyclerView);
         postAdapter = new PostSmallAdapter(this);
         postLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        postLayoutManager.setReverseLayout(true);
-        postLayoutManager.setStackFromEnd(true);
+//        postLayoutManager.setReverseLayout(true);
+//        postLayoutManager.setStackFromEnd(true);
         postRecyclerView.setLayoutManager(postLayoutManager);
         postRecyclerView.setAdapter(postAdapter);
 

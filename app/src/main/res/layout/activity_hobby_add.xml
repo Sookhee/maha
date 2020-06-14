@@ -61,7 +61,7 @@
             app:srcCompat="@drawable/search" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/hobbySearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -92,7 +92,7 @@
             android:background="@color/purple"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText" />
+            app:layout_constraintTop_toBottomOf="@+id/hobbySearch" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
