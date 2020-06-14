@@ -11,11 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         >
-        <activity android:name=".WriteActivity"></activity>
-        <activity android:name=".PostActivity" />
-        <activity android:name=".HobbyAddActivity" >
+        <activity android:name=".WritePostActivity">
 
         </activity>
+        <activity android:name=".PostActivity" />
+        <activity android:name=".HobbyAddActivity"></activity>
         <activity android:name=".HobbyListActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".ProfileActivity" />

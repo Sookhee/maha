@@ -111,11 +111,11 @@ public class HobbyActivity extends AppCompatActivity {
 
         if(isAddHobby == false){
             svAddHobby.setVisibility(View.GONE);
-            tvGoWrite.setVisibility(View.GONE);
+            tvGoWrite.setVisibility(View.VISIBLE);
         }
         else{
             svAddHobby.setVisibility(View.VISIBLE);
-            tvGoWrite.setVisibility(View.VISIBLE);
+            tvGoWrite.setVisibility(View.GONE);
         }
         svAddHobby.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +128,7 @@ public class HobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent;
-                intent = new Intent(v.getContext(), WriteActivity.class);
+                intent = new Intent(v.getContext(), WritePostActivity.class);
                 v.getContext().startActivity(intent);
             }
         });
