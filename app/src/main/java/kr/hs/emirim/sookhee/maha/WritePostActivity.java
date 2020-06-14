@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.scrat.app.richtext.RichEditText;
 
@@ -24,7 +27,10 @@ import java.util.Locale;
 public class WritePostActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_GET_CONTENT = 666;
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 444;
+
     private RichEditText richEditText;
+    TextView tvSubmit;
+    EditText etTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +38,27 @@ public class WritePostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write_post);
 
         richEditText = (RichEditText) findViewById(R.id.rich_text);
-        richEditText.fromHtml(
-                "<blockquote>Android 端的富文本编辑器</blockquote>" +
-                        "<ul>" +
-                        "<li>支持实时编辑</li>" +
-                        "<li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,超链接,撤销与恢复等</li>" +
-                        "<li>使用<u>Glide 4</u>加载图片</li>" +
-                        "</ul>" +
-                        "<img src=\"http://biuugames.huya.com/221d89ac671feac1.gif\"><br><br>" +
-                        "<img src=\"http://biuugames.huya.com/5-160222145918.jpg\"><br><br>"
-        );
+        tvSubmit = (TextView)findViewById(R.id.submit);
+        etTitle = (EditText)findViewById(R.id.titleEditText);
+
+        tvSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date currentTime = Calendar.getInstance().getTime();
+                String date = new SimpleDateFormat("yyyy.MM.dd.", Locale.getDefault()).format(currentTime);
+                long curTime = System.currentTimeMillis();
+                String title = etTitle.getText().toString().trim();
+                String content = richEditText.toHtml().toString();
+
+                Log.e("title", title);
+                Log.e("content", content);
+                Log.e("date", date);
+                Log.e("curTime", curTime + "");
+
+                finish();
+            }
+        });
+
     }
 
     public void setBold(View v) {
