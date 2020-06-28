@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,8 +20,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
+import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import kr.hs.emirim.sookhee.maha.adapter.HobbyCircleAdapter;
 import kr.hs.emirim.sookhee.maha.adapter.PostSmallAdapter;
 import kr.hs.emirim.sookhee.maha.model.hobbyData;
@@ -34,6 +39,9 @@ public class ProfileActivity extends AppCompatActivity {
     LinearLayoutManager postLayoutManager;
     PostSmallAdapter postAdapter;
 
+    CircleImageView ivProfile;
+    TextView tvNickname, tvUserArea;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +52,13 @@ public class ProfileActivity extends AppCompatActivity {
         DatabaseReference hobbyRef = database.getReference().child("hobby");
         Query hobbyQuery = hobbyRef;
         DatabaseReference postRef = database.getReference().child("post");
-        Query postQuery = postRef.orderByChild("writerId").equalTo(1);
+        Query postQuery = postRef.orderByChild("writerId").equalTo("s2018s38@gmail.com");
+        DatabaseReference userRef = database.getReference().child("user");
+        Query userQuery = userRef.orderByChild("email").equalTo("s2018s38@gmail.com");
+
+        ivProfile = (CircleImageView)findViewById(R.id.hobbyImage);
+        tvNickname = (TextView)findViewById(R.id.proflieUserName);
+        tvUserArea = (TextView)findViewById(R.id.profileArea);
 
         // Hobby RecyclerView
         hobbyRecyclerView = (RecyclerView)findViewById(R.id.profileMyHobbyRecyclerView);
@@ -119,6 +133,49 @@ public class ProfileActivity extends AppCompatActivity {
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 String key = dataSnapshot.getKey();
                 postAdapter.deleteDataAndUpdate(key);
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        // User Data
+        userQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String userName, userProfileImg, userArea;
+
+                userName = dataSnapshot.child("email").getValue(String.class);
+                userArea = dataSnapshot.child("area").getValue(String.class);
+                userProfileImg = dataSnapshot.child("profileImg").getValue(String.class);
+
+                tvNickname.setText(userName);
+                tvUserArea.setText(userArea);
+                Picasso.get().load(userProfileImg).into(ivProfile);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String userName, userProfileImg, userArea;
+
+                userName = dataSnapshot.child("userName").getValue(String.class);
+                userArea = dataSnapshot.child("area").getValue(String.class);
+                userProfileImg = dataSnapshot.child("profileImg").getValue(String.class);
+
+                tvNickname.setText(userName);
+                tvUserArea.setText(userArea);
+                Picasso.get().load(userProfileImg).into(ivProfile);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
             }
 
             @Override

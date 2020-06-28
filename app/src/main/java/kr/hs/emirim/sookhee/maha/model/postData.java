@@ -3,40 +3,33 @@ package kr.hs.emirim.sookhee.maha.model;
 import java.util.ArrayList;
 
 public class postData {
-    private int postId;
     private int hobbyId;
     private int likeCount;
     private int viewCount;
     private long time;
+    private String date;
     private String title;
     private String content;
     private String hobbyName;
     private String writer;
     private String writerProfile;
     private ArrayList<String> img;
+    private ArrayList<String> tagList;
 
-
-    public postData(){}
-    public postData(int postId, int hobbyId, int likeCount, int viewCount, long time, String title, String content, String hobbyName, String writer, String writerProfile, ArrayList<String> imgList){
-        this.postId = postId;
+    public postData() { }
+    public postData(int hobbyId, int likeCount, int viewCount, long time, String date, String title, String content, String hobbyName, String writer, String writerProfile, ArrayList<String> img, ArrayList<String> tag){
         this.hobbyId = hobbyId;
         this.likeCount = likeCount;
         this.viewCount = viewCount;
         this.time = time;
+        this.date = date;
         this.title = title;
         this.content = content;
         this.hobbyName = hobbyName;
         this.writer = writer;
         this.writerProfile = writerProfile;
-        this.img = imgList;
-    }
-
-    public int getPostId() {
-        return postId;
-    }
-
-    public void setPostId(int postId) {
-        this.postId = postId;
+        this.img = img;
+        this.tagList = tag;
     }
 
     public int getHobbyId() {
@@ -71,6 +64,14 @@ public class postData {
         this.time = time;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -99,7 +100,7 @@ public class postData {
         return writer;
     }
 
-    public void setWrite(String writer) {
+    public void setWriter(String writer) {
         this.writer = writer;
     }
 
@@ -117,5 +118,13 @@ public class postData {
 
     public void setImg(ArrayList<String> img) {
         this.img = img;
+    }
+
+    public ArrayList<String> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(ArrayList<String> tagList) {
+        this.tagList = tagList;
     }
 }

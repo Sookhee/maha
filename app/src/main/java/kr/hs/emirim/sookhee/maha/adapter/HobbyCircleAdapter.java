@@ -2,6 +2,7 @@ package kr.hs.emirim.sookhee.maha.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.Nullable;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -18,6 +27,7 @@ import java.util.HashMap;
 import kr.hs.emirim.sookhee.maha.HobbyActivity;
 import kr.hs.emirim.sookhee.maha.R;
 import kr.hs.emirim.sookhee.maha.model.hobbyData;
+import kr.hs.emirim.sookhee.maha.model.postData;
 
 public class HobbyCircleAdapter extends RecyclerView.Adapter<HobbyCircleAdapter.CustomViewHolder> {
 
@@ -41,11 +51,11 @@ public class HobbyCircleAdapter extends RecyclerView.Adapter<HobbyCircleAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, final int position) {
-        hobbyData hobby = (hobbyData) mData.values().toArray()[position];
+        final hobbyData hobby = (hobbyData) mData.values().toArray()[position];
 
         String img = hobby.getImgUrl();
-        holder.hobbyId = hobby.getHobbyId();
         holder.hobbyName = hobby.getName();
+        holder.hobbyId = hobby.getHobbyId();
 
         holder.tvName.setText(hobby.getName());
         holder.tvMemberCount.setText(hobby.getMemberCount() + "");
@@ -98,4 +108,6 @@ public class HobbyCircleAdapter extends RecyclerView.Adapter<HobbyCircleAdapter.
         mData.remove(key);
         notifyDataSetChanged();
     }
+
+
 }

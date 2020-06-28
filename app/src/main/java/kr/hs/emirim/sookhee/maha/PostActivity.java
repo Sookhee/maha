@@ -1,19 +1,23 @@
 package kr.hs.emirim.sookhee.maha;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,11 +29,16 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import kr.hs.emirim.sookhee.maha.adapter.TagAdapter;
+import kr.hs.emirim.sookhee.maha.model.postData;
 
 public class PostActivity extends AppCompatActivity {
     Intent intent;
-    int postId;
-    final ArrayList<String> postImageList = new ArrayList<>();
+    String postTitle, postKey = "0";
+
+    FirebaseDatabase database;
+
+    ArrayList<String> postImageList = new ArrayList<>();
+    ArrayList<String> tagList = new ArrayList<>();
 
     TextView tvTitle;
     TextView tvContent;
@@ -49,7 +58,8 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post);
 
         intent = new Intent(this.getIntent());
-        postId = intent.getIntExtra("postId", -1);
+//        postId = intent.getIntExtra("postId", -1);
+        postTitle = intent.getStringExtra("postTitle");
 
         tvTitle = (TextView)findViewById(R.id.postTitle);
         tvContent = (TextView)findViewById(R.id.postContent);
@@ -66,59 +76,55 @@ public class PostActivity extends AppCompatActivity {
         llPostImageList = (LinearLayout)findViewById(R.id.postImageList);
 
         // Firebase Query
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         DatabaseReference postRef = database.getReference().child("post");
-        Query postQuery = postRef.child(String.valueOf(postId));
-        DatabaseReference tagRef = database.getReference().child("post");
-        Query tagQuery = tagRef.child(String.valueOf(postId)).child("tag");
 
-        postQuery.addValueEventListener(new ValueEventListener() {
+
+
+        postRef.orderByChild("title").equalTo(postTitle).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                tvTitle.setText(dataSnapshot.child("title").getValue(String.class));
-                tvContent.setText(dataSnapshot.child("content").getValue(String.class));
-                tvWriter.setText(dataSnapshot.child("writer").getValue(String.class));
-                tvDate.setText(dataSnapshot.child("date").getValue(String.class));
-                tvLikeCount.setText(dataSnapshot.child("likeCount").getValue(int.class) + "");
-                tvViewCount.setText(dataSnapshot.child("viewCount").getValue(int.class) + "");
-            }
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                postData post = dataSnapshot.getValue(postData.class);
+                postKey = dataSnapshot.getKey();
+                Log.e("KEY", postKey);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                tvTitle.setText(post.getTitle());
+                tvContent.setText(post.getContent());
+                tvWriter.setText(post.getWriter());
+                tvDate.setText(post.getDate());
+                tvLikeCount.setText(post.getLikeCount() + "");
+                tvViewCount.setText(post.getViewCount() + "");
 
-            }
-        });
-
-        // Post 이미지 불러오기
-        postRef.child(String.valueOf(postId)).child("img").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    String img = postSnapshot.getValue(String.class);
-                    postImageList.add(img);
-                }
+                postImageList = post.getImg();
                 setStoryContentLayout(0);
+
+                setTagRecyclerView();
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                postData post = dataSnapshot.getValue(postData.class);
+
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
 
-        tagQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                ArrayList<String> values = (ArrayList<String>) dataSnapshot.getValue();
-                tagRecyclerView.setAdapter(new TagAdapter(values));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                System.out.println("Failed to read value." + error.toException());
-            }
         });
 
     }
@@ -126,6 +132,7 @@ public class PostActivity extends AppCompatActivity {
     public void back(View v){
         super.onBackPressed();
     }
+
 
     public void setStoryContentLayout(int imgCnt){
         llPostImageList.removeAllViews();
@@ -143,5 +150,23 @@ public class PostActivity extends AppCompatActivity {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return px;
+    }
+
+    public void setTagRecyclerView() {
+        DatabaseReference tagRef = database.getReference().child("post");
+        tagRef.child(postKey).child("tag").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ArrayList<String> values = (ArrayList<String>) dataSnapshot.getValue();
+                tagRecyclerView.setAdapter(new TagAdapter(values));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                System.out.println("Failed to read value." + error.toException());
+            }
+        });
     }
 }

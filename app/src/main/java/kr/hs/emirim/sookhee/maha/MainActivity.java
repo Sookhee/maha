@@ -8,6 +8,7 @@ package kr.hs.emirim.sookhee.maha;
         import android.content.Intent;
         import android.os.Bundle;
         import android.view.View;
+        import android.widget.ImageView;
 
         import com.google.firebase.database.ChildEventListener;
         import com.google.firebase.database.DataSnapshot;
@@ -32,17 +33,27 @@ public class MainActivity extends AppCompatActivity {
     LinearLayoutManager postLayoutManager;
     PostSmallAdapter postAdapter;
 
+    ImageView mainLogo;
+
+    // Firebase Query
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference hobbyRef = database.getReference().child("hobby");
+    Query hobbyQuery = hobbyRef;
+    DatabaseReference postRef = database.getReference().child("post");
+    Query postQuery = postRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Firebase Query
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference hobbyRef = database.getReference().child("hobby");
-        Query hobbyQuery = hobbyRef;
-        DatabaseReference postRef = database.getReference().child("post");
-        Query postQuery = postRef;
+        mainLogo = (ImageView)findViewById(R.id.mainLogo);
+        mainLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadPostList();
+            }
+        });
 
         // Hobby RecyclerView
         hobbyRecyclerView = (RecyclerView)findViewById(R.id.hobbyRecyclerView);
@@ -60,7 +71,18 @@ public class MainActivity extends AppCompatActivity {
         postRecyclerView.setLayoutManager(postLayoutManager);
         postRecyclerView.setAdapter(postAdapter);
 
+        loadHobbyList();
+        loadPostList();
 
+    }
+
+    public void onClickProfile(View view){
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+
+    public void loadHobbyList(){
         // Hobby List
         hobbyQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -95,7 +117,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    public void loadPostList(View view){
+        loadPostList();
+    }
+
+    public void loadPostList(){
         // Post List
         postQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -131,11 +159,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void clickProfile(View v){
-        Intent intent;
-        intent = new Intent(getApplicationContext(), ProfileActivity.class);
-        startActivity(intent);
-    }
-
 }
