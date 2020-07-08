@@ -11,9 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         >
-        <activity android:name=".WritePostActivity">
-
-        </activity>
+        <activity android:name=".TagApplyActivity"></activity>
+        <activity
+            android:name=".SearchPopupActivity" />
+        <activity android:name=".WritePostActivity" />
         <activity android:name=".PostActivity" />
         <activity android:name=".HobbyAddActivity" />
         <activity android:name=".HobbyListActivity" />

@@ -17,6 +17,7 @@ package kr.hs.emirim.sookhee.maha;
         import com.google.firebase.database.FirebaseDatabase;
         import com.google.firebase.database.Query;
         import com.google.firebase.database.annotations.Nullable;
+        import com.squareup.picasso.Picasso;
 
         import de.hdodenhof.circleimageview.CircleImageView;
         import kr.hs.emirim.sookhee.maha.adapter.HobbyCircleAdapter;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     PostSmallAdapter postAdapter;
 
     ImageView mainLogo;
+    ImageView ivProfile;
+    ImageView ivBanner;
 
     // Firebase Query
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -46,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ivBanner = (ImageView)findViewById(R.id.ivBanner);
+        ivProfile = (ImageView)findViewById(R.id.mainProfileImage);
         mainLogo = (ImageView)findViewById(R.id.mainLogo);
         mainLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,13 +70,22 @@ public class MainActivity extends AppCompatActivity {
         postRecyclerView = (RecyclerView)findViewById(R.id.postRecyclerView);
         postAdapter = new PostSmallAdapter(this);
         postLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        postLayoutManager.setReverseLayout(true);
-//        postLayoutManager.setStackFromEnd(true);
+        postLayoutManager.setReverseLayout(true);
+        postLayoutManager.setStackFromEnd(true);
         postRecyclerView.setLayoutManager(postLayoutManager);
         postRecyclerView.setAdapter(postAdapter);
 
+        setProfile();
         loadHobbyList();
         loadPostList();
+
+        ivBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TagApplyActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -146,6 +159,46 @@ public class MainActivity extends AppCompatActivity {
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 String key = dataSnapshot.getKey();
                 postAdapter.deleteDataAndUpdate(key);
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void setProfile(){
+        // Firebase Query
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = database.getReference().child("user");
+        Query userQuery = userRef.orderByChild("email").equalTo("s2018s38@gmail.com");
+
+        // User Data
+        userQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String userProfileImg;
+                userProfileImg = dataSnapshot.child("profileImg").getValue(String.class);
+
+                Picasso.get().load(userProfileImg).into(ivProfile);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String userProfileImg;
+                userProfileImg = dataSnapshot.child("profileImg").getValue(String.class);
+
+                Picasso.get().load(userProfileImg).into(ivProfile);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
             }
 
             @Override

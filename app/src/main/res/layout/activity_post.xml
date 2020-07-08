@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:background="@color/white"
     tools:context=".PostActivity">
 
@@ -119,10 +121,10 @@
                     app:layout_constraintTop_toTopOf="@+id/shadowView">
 
                     <ImageView
-                        android:id="@+id/postHeartImage"
+                        android:id="@+id/postLikeImage"
                         android:layout_width="14dp"
                         android:layout_height="14dp"
-                        app:srcCompat="@drawable/post_heart_false" />
+                        android:background="@drawable/post_heart_false" />
 
                     <TextView
                         android:id="@+id/postLikeCount"
@@ -201,19 +203,31 @@
 
             </LinearLayout>
 
-            <TextView
+            <com.scrat.app.richtext.RichEditText
                 android:id="@+id/postContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
+                android:enabled="false"
                 android:fontFamily="@font/notosanscjkkr_regular"
                 android:includeFontPadding="false"
                 android:lineSpacingExtra="7sp"
                 android:text="TextView"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:bulletColor="@color/purple"
+                app:bulletGapWidth="8dp"
+                app:bulletRadius="2dp"
+                app:historyEnable="true"
+                app:historySize="99"
+                app:linkColor="@color/purple"
+                app:linkUnderline="true"
+                app:quoteCapWidth="2dp"
+                app:quoteColor="@color/purple"
+                app:quoteStripeWidth="8dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -46,7 +46,13 @@ public class PostSmallAdapter extends RecyclerView.Adapter<PostSmallAdapter.Cust
         holder.postTitle = post.getTitle();
 
         ArrayList<String> imgList = post.getImg();
-        String img = imgList.get(0);
+        String img;
+        if(imgList.get(0).matches("")){
+            img = "https://firebasestorage.googleapis.com/v0/b/maha-16b41.appspot.com/o/placeholder.png?alt=media&token=ab56864a-d69e-4c33-8e96-727edf5ddd11";
+        }
+        else{
+            img = imgList.get(0);
+        }
 
         holder.tvTitle.setText(post.getTitle());
         holder.tvHobby.setText(post.getHobbyName());

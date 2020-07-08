@@ -152,7 +152,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String userName, userProfileImg, userArea;
 
-                userName = dataSnapshot.child("email").getValue(String.class);
+                userName = dataSnapshot.child("userName").getValue(String.class);
                 userArea = dataSnapshot.child("area").getValue(String.class);
                 userProfileImg = dataSnapshot.child("profileImg").getValue(String.class);
 

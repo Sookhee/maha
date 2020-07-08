@@ -41,14 +41,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import kr.hs.emirim.sookhee.maha.adapter.TagAdapter;
 import kr.hs.emirim.sookhee.maha.adapter.TagSelectAdapter;
+import kr.hs.emirim.sookhee.maha.model.postData;
 
 public class WritePostActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_GET_CONTENT = 666;
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 444;
+
+    Intent intent;
 
     private RichEditText richEditText;
     TextView tvSubmit, tvSelectTag;
@@ -60,6 +65,8 @@ public class WritePostActivity extends AppCompatActivity {
     StaggeredGridLayoutManager tagLayoutManager;
 
     boolean isSelect = false;
+    String hobbyName;
+    int hobbyId;
     ArrayList<String> selectedTag = new ArrayList<>();
 
     public static Context mContext;
@@ -70,11 +77,15 @@ public class WritePostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write_post);
 
         mContext = this;
+        intent = getIntent();
+        hobbyName = intent.getStringExtra("hobbyName");
+        hobbyId = intent.getIntExtra("hobbyId", 1);
 
         // Firebase Query
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference tagRef = database.getReference().child("hobby");
         Query tagQuery = tagRef.child(String.valueOf(0)).child("tag");
+        final DatabaseReference writeRef = database.getReference().child("post");
 
         richEditText = (RichEditText) findViewById(R.id.rich_text);
         tvSubmit = (TextView)findViewById(R.id.submit);
@@ -117,12 +128,21 @@ public class WritePostActivity extends AppCompatActivity {
                 String title = etTitle.getText().toString().trim();
                 String content = richEditText.toHtml().toString();
 
-                Log.e("title", title);
-                Log.e("content", content);
-                Log.e("date", date);
-                Log.e("curTime", curTime + "");
 
-                finish();
+                if(title.matches("") || content.matches("") || selectedTag.size() == 0){
+                    Toast.makeText(getApplicationContext(), "빠진 내용이 없는지 확인해주세요", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    ArrayList<String> img = new ArrayList<>();
+                    img.add("");
+                    Map<String, Object> isLikeMap = new HashMap<String, Object>();
+                    postData postData = new postData(hobbyId, 0, 0, curTime, date, title, content, hobbyName, "sookhee", "s2018s38@gmail.com", "https://images.unsplash.com/photo-1582769923195-c6e60dc1d8dc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60", img, selectedTag);
+                    isLikeMap.put(String.valueOf(curTime), postData);
+
+                    writeRef.updateChildren(isLikeMap);
+
+                    finish();
+                }
             }
         });
 

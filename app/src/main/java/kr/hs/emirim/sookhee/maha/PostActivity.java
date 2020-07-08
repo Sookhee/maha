@@ -24,9 +24,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.scrat.app.richtext.RichEditText;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import kr.hs.emirim.sookhee.maha.adapter.TagAdapter;
 import kr.hs.emirim.sookhee.maha.model.postData;
@@ -34,23 +37,28 @@ import kr.hs.emirim.sookhee.maha.model.postData;
 public class PostActivity extends AppCompatActivity {
     Intent intent;
     String postTitle, postKey = "0";
+    int viewCount = 0;
 
     FirebaseDatabase database;
+    DatabaseReference postRef;
 
     ArrayList<String> postImageList = new ArrayList<>();
     ArrayList<String> tagList = new ArrayList<>();
 
     TextView tvTitle;
-    TextView tvContent;
+    RichEditText tvContent;
     TextView tvWriter;
     TextView tvDate;
+    ImageView ivPostLike;
     TextView tvLikeCount;
     TextView tvViewCount;
     LinearLayout llPostImageList;
+    ImageView ivProfile;
 
     RecyclerView tagRecyclerView;
     StaggeredGridLayoutManager tagLayoutManager;
     TagAdapter tagAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +70,15 @@ public class PostActivity extends AppCompatActivity {
         postTitle = intent.getStringExtra("postTitle");
 
         tvTitle = (TextView)findViewById(R.id.postTitle);
-        tvContent = (TextView)findViewById(R.id.postContent);
+        tvContent = (RichEditText)findViewById(R.id.postContent);
         tvWriter = (TextView)findViewById(R.id.postWriter);
         tvDate = (TextView)findViewById(R.id.postDate);
+        ivPostLike = (ImageView)findViewById(R.id.postLikeImage);
         tvLikeCount = (TextView)findViewById(R.id.postLikeCount);
         tvViewCount = (TextView)findViewById(R.id.postViewCount);
+        ivProfile = (ImageView)findViewById(R.id.postWriterProfile);
 
-        // Hobby RecyclerView
+        // Tag RecyclerView
         tagRecyclerView = (RecyclerView)findViewById(R.id.tagRecyclerView);
         tagLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
         tagRecyclerView.setLayoutManager(tagLayoutManager);
@@ -77,8 +87,7 @@ public class PostActivity extends AppCompatActivity {
 
         // Firebase Query
         database = FirebaseDatabase.getInstance();
-        DatabaseReference postRef = database.getReference().child("post");
-
+        postRef = database.getReference().child("post");
 
 
         postRef.orderByChild("title").equalTo(postTitle).addChildEventListener(new ChildEventListener() {
@@ -89,19 +98,21 @@ public class PostActivity extends AppCompatActivity {
                 Log.e("KEY", postKey);
 
                 tvTitle.setText(post.getTitle());
-                tvContent.setText(post.getContent());
+                tvContent.fromHtml(post.getContent());
                 tvWriter.setText(post.getWriter());
                 tvDate.setText(post.getDate());
                 tvLikeCount.setText(post.getLikeCount() + "");
-                tvViewCount.setText(post.getViewCount() + "");
+                tvViewCount.setText((post.getViewCount() + 1) + "");
+                viewCount = post.getViewCount();
+                Picasso.get().load(post.getWriterProfile()).into(ivProfile);
 
                 postImageList = post.getImg();
                 setStoryContentLayout(0);
 
                 setTagRecyclerView();
+                addPostViewCount();
 
-
-            }
+                }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -127,6 +138,13 @@ public class PostActivity extends AppCompatActivity {
 
         });
 
+        ivPostLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ivPostLike.setBackgroundResource(R.drawable.post_heart_true);
+            }
+        });
+
     }
 
     public void back(View v){
@@ -136,12 +154,17 @@ public class PostActivity extends AppCompatActivity {
 
     public void setStoryContentLayout(int imgCnt){
         llPostImageList.removeAllViews();
-        for(int i = 0; i < postImageList.size(); i++){
-            ImageView iv = new ImageView(this);
-            Picasso.get().load(postImageList.get(i)).into(iv);
-            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            iv.setPadding(0, (int)convertDpToPixel(16), 0, 0);
-            llPostImageList.addView(iv);
+        if(postImageList.get(0).matches("")){
+
+        }
+        else{
+            for(int i = 0; i < postImageList.size(); i++){
+                ImageView iv = new ImageView(this);
+                Picasso.get().load(postImageList.get(i)).into(iv);
+                iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                iv.setPadding(0, (int)convertDpToPixel(16), 0, 0);
+                llPostImageList.addView(iv);
+            }
         }
     }
 
@@ -168,5 +191,14 @@ public class PostActivity extends AppCompatActivity {
                 System.out.println("Failed to read value." + error.toException());
             }
         });
+    }
+
+    public void addPostViewCount(){
+        //게시물 viewCount + 1 기능 구현
+        DatabaseReference postLikeRef = postRef.child(postKey);
+        Map<String, Object> isLikeMap = new HashMap<String, Object>();
+        isLikeMap.put("viewCount", viewCount+1);
+
+        postLikeRef.updateChildren(isLikeMap);
     }
 }

@@ -7,9 +7,13 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -28,15 +32,20 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 import kr.hs.emirim.sookhee.maha.adapter.PostLargeAdapter;
 import kr.hs.emirim.sookhee.maha.model.hobbyData;
 import kr.hs.emirim.sookhee.maha.model.postData;
 
 public class HobbyActivity extends AppCompatActivity {
+    public static Context mContext;
+
     Intent intent;
     TextView tvTitle;
     FloatingActionButton tvGoWrite;
     TextView tvGoSearch;
+    TextView tvSearchText;
     ShadowView svAddHobby;
     NestedScrollView hobbyScrollView;
 
@@ -45,6 +54,7 @@ public class HobbyActivity extends AppCompatActivity {
     TextView tvHobbyMemberCount;
     TextView tvHobbyPostCount;
     ImageView ivHobbyBackground;
+    ConstraintLayout clSearchBar;
 
     String hobbyName;
     int hobbyId;
@@ -54,10 +64,17 @@ public class HobbyActivity extends AppCompatActivity {
     LinearLayoutManager postLayoutManager;
     PostLargeAdapter postAdapter;
 
+    SearchDialog sd;
+
+    ArrayList<String> selectedTag = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hobby);
+
+        mContext = this;
 
         intent = getIntent();
         hobbyName = intent.getStringExtra("hobbyName");
@@ -67,9 +84,11 @@ public class HobbyActivity extends AppCompatActivity {
         hobbyScrollView = (NestedScrollView)findViewById(R.id.hobbyScrollView);
 
         tvTitle = (TextView)findViewById(R.id.hobbyTitle);
+        tvSearchText = (TextView)findViewById(R.id.tvSearchText);
         tvGoWrite = (FloatingActionButton) findViewById(R.id.goWrite);
         tvGoSearch = (TextView)findViewById(R.id.hobbySearch);
         svAddHobby = (ShadowView)findViewById(R.id.hobbyAdd);
+        clSearchBar = (ConstraintLayout)findViewById(R.id.clSearchBar);
 
         tvHobbyName = (TextView)findViewById(R.id.tvHobbyName);
         tvHobbyIntro = (TextView)findViewById(R.id.tvHobbyIntro);
@@ -198,17 +217,64 @@ public class HobbyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent;
                 intent = new Intent(v.getContext(), WritePostActivity.class);
+                intent.putExtra("hobbyId", hobbyId);
+                intent.putExtra("hobbyName", hobbyName);
                 v.getContext().startActivity(intent);
             }
         });
 
-        tvGoSearch.setOnClickListener(new View.OnClickListener() {
+//        clSearchBar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent;
+//                intent = new Intent(v.getContext(), SearchPopupActivity.class);
+//                v.getContext().startActivity(intent);
+//            }
+//        });
+
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
+        int width = dm.widthPixels; //디바이스 화면 너비
+        int height = dm.heightPixels; //디바이스 화면 높이
+
+        sd = new SearchDialog(this);
+        WindowManager.LayoutParams wm = sd.getWindow().getAttributes();  //다이얼로그의 높이 너비 설정하기위해
+        wm.copyFrom(sd.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
+        wm.width = width;  //화면 너비의 절반
+        wm.height = height/2;  //화면 높이의 절반
+        clSearchBar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "click", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                sd.show();  //다이얼로그
             }
         });
 
+    }
+
+    public void setTag(int postiion, String name, boolean isChecked){
+        if(isChecked){
+            selectedTag.add((name));
+
+        }
+        else{
+            selectedTag.remove(selectedTag.indexOf(name));
+        }
+    }
+
+    public void getTagList(){
+        if(selectedTag.size() > 0){
+            String strTag = "#" + selectedTag.get(0);
+            for(int i = 1; i < selectedTag.size(); i++){
+                strTag += ", #" + selectedTag.get(i);
+            }
+            tvSearchText.setText(strTag);
+        }
+        else{
+            tvSearchText.setText("");
+        }
+    }
+
+    public int getHobbyId(){
+        return hobbyId;
     }
 
     public void back(View v){

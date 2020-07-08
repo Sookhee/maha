@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.scrat.app.richtext.RichEditText;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -75,11 +76,17 @@ public class PostLargeAdapter extends RecyclerView.Adapter<PostLargeAdapter.Cust
         holder.postTitle = post.getTitle();
 
         ArrayList<String> imgList = post.getImg();
-        String mainImg = imgList.get(0);
+        String mainImg;
+        if(imgList.get(0).matches("")){
+            mainImg = "https://firebasestorage.googleapis.com/v0/b/maha-16b41.appspot.com/o/placeholder.png?alt=media&token=ab56864a-d69e-4c33-8e96-727edf5ddd11";
+        }
+        else{
+            mainImg = imgList.get(0);
+        }
         String profileImg = post.getWriterProfile();
 
         holder.tvTitle.setText(post.getTitle());
-        holder.tvContent.setText(post.getContent());
+        holder.tvContent.fromHtml(post.getContent());
         holder.tvWriter.setText(post.getWriter());
         holder.tvLikeCount.setText(post.getLikeCount() + "");
         holder.tvViewCount.setText(post.getViewCount() + "");
@@ -98,7 +105,7 @@ public class PostLargeAdapter extends RecyclerView.Adapter<PostLargeAdapter.Cust
 
         View pView;
         TextView tvTitle;
-        TextView tvContent;
+        RichEditText tvContent;
         TextView tvWriter;
         TextView tvLikeCount;
         TextView tvViewCount;
@@ -113,7 +120,7 @@ public class PostLargeAdapter extends RecyclerView.Adapter<PostLargeAdapter.Cust
 
             pView = itemView;
             tvTitle = (TextView) pView.findViewById(R.id.postTitle);
-            tvContent = (TextView)pView.findViewById(R.id.postContent);
+            tvContent = (RichEditText) pView.findViewById(R.id.postContent);
             tvWriter = (TextView) pView.findViewById(R.id.postWriter);
             tvLikeCount = (TextView) pView.findViewById(R.id.postLikeCount);
             tvViewCount = (TextView) pView.findViewById(R.id.postViewCount);

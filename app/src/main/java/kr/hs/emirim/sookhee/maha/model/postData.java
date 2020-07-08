@@ -12,12 +12,13 @@ public class postData {
     private String content;
     private String hobbyName;
     private String writer;
+    private String writerId;
     private String writerProfile;
     private ArrayList<String> img;
-    private ArrayList<String> tagList;
+    private ArrayList<String> tag;
 
     public postData() { }
-    public postData(int hobbyId, int likeCount, int viewCount, long time, String date, String title, String content, String hobbyName, String writer, String writerProfile, ArrayList<String> img, ArrayList<String> tag){
+    public postData(int hobbyId, int likeCount, int viewCount, long time, String date, String title, String content, String hobbyName, String writer, String writerId, String writerProfile, ArrayList<String> img, ArrayList<String> tag){
         this.hobbyId = hobbyId;
         this.likeCount = likeCount;
         this.viewCount = viewCount;
@@ -27,9 +28,10 @@ public class postData {
         this.content = content;
         this.hobbyName = hobbyName;
         this.writer = writer;
+        this.writerId = writerId;
         this.writerProfile = writerProfile;
         this.img = img;
-        this.tagList = tag;
+        this.tag = tag;
     }
 
     public int getHobbyId() {
@@ -120,11 +122,19 @@ public class postData {
         this.img = img;
     }
 
-    public ArrayList<String> getTagList() {
-        return tagList;
+    public ArrayList<String> getTag() {
+        return tag;
     }
 
-    public void setTagList(ArrayList<String> tagList) {
-        this.tagList = tagList;
+    public void setTag(ArrayList<String> tagList) {
+        this.tag = tagList;
+    }
+
+    public String getWriterId() {
+        return writerId;
+    }
+
+    public void setWriterId(String writerId) {
+        this.writerId = writerId;
     }
 }

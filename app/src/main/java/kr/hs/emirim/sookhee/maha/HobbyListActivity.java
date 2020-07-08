@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +28,8 @@ public class HobbyListActivity extends AppCompatActivity {
     HobbyListAdapter hobbyListAdapter;
     ItemTouchHelper helper;
 
+    TextView tvSubmitMyHobbyList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,15 @@ public class HobbyListActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference hobbyRef = database.getReference().child("hobby");
         Query hobbyQuery = hobbyRef;
+
+        tvSubmitMyHobbyList = (TextView)findViewById(R.id.tvSubmitMyHobbyList);
+        tvSubmitMyHobbyList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "저장되었습니다", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
 
 
         hobbyRecyclerView = findViewById(R.id.hobbyListRecyclerView);

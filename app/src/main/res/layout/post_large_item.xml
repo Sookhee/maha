@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="32dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:background="@color/white">
 
     <ImageView
@@ -14,8 +16,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout5"
@@ -136,20 +137,32 @@
         app:layout_constraintStart_toStartOf="@+id/postMainImage"
         app:layout_constraintTop_toBottomOf="@+id/postMainImage" />
 
-    <TextView
+    <com.scrat.app.richtext.RichEditText
         android:id="@+id/postContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
+        android:enabled="false"
         android:fontFamily="@font/notosanscjkkr_regular"
         android:includeFontPadding="false"
         android:maxLines="1"
         android:text="TextView"
         android:textColor="@color/warm_gray"
         android:textSize="11sp"
+        app:bulletColor="@color/purple"
+        app:bulletGapWidth="8dp"
+        app:bulletRadius="2dp"
+        app:historyEnable="true"
+        app:historySize="99"
+        app:linkColor="@color/purple"
+        app:linkUnderline="true"
+        app:quoteCapWidth="2dp"
+        app:quoteColor="@color/purple"
+        app:quoteStripeWidth="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
