@@ -58,13 +58,13 @@ public class HobbyActivity extends AppCompatActivity {
 
     String hobbyName;
     int hobbyId;
-    boolean isAddHobby;
 
     RecyclerView postRecyclerView;
     LinearLayoutManager postLayoutManager;
     PostLargeAdapter postAdapter;
 
     SearchDialog sd;
+    HobbyAddDialog hobbyAddDialog;
 
     ArrayList<String> selectedTag = new ArrayList<>();
 
@@ -79,7 +79,6 @@ public class HobbyActivity extends AppCompatActivity {
         intent = getIntent();
         hobbyName = intent.getStringExtra("hobbyName");
         hobbyId = intent.getIntExtra("hobbyId", 1);
-        isAddHobby = intent.getBooleanExtra("isAddHobby", false);
 
         hobbyScrollView = (NestedScrollView)findViewById(R.id.hobbyScrollView);
 
@@ -114,6 +113,16 @@ public class HobbyActivity extends AppCompatActivity {
         postLayoutManager.setStackFromEnd(true);
         postRecyclerView.setLayoutManager(postLayoutManager);
         postRecyclerView.setAdapter(postAdapter);
+
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
+        int width = dm.widthPixels; //디바이스 화면 너비
+        int height = dm.heightPixels; //디바이스 화면 높이
+
+        sd = new SearchDialog(this);
+        WindowManager.LayoutParams wm = sd.getWindow().getAttributes();  //다이얼로그의 높이 너비 설정하기위해
+        wm.copyFrom(sd.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
+        wm.width = width;  //화면 너비의 절반
+        wm.height = height/2;  //화면 높이의 절반
 
         // Post List
         postQuery.addChildEventListener(new ChildEventListener() {
@@ -197,21 +206,6 @@ public class HobbyActivity extends AppCompatActivity {
             }
         });
 
-        if(isAddHobby == false){
-            svAddHobby.setVisibility(View.GONE);
-            tvGoWrite.setVisibility(View.VISIBLE);
-        }
-        else{
-            svAddHobby.setVisibility(View.VISIBLE);
-            tvGoWrite.setVisibility(View.GONE);
-        }
-        svAddHobby.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "add hobby!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         tvGoWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,15 +226,7 @@ public class HobbyActivity extends AppCompatActivity {
 //            }
 //        });
 
-        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
-        int width = dm.widthPixels; //디바이스 화면 너비
-        int height = dm.heightPixels; //디바이스 화면 높이
 
-        sd = new SearchDialog(this);
-        WindowManager.LayoutParams wm = sd.getWindow().getAttributes();  //다이얼로그의 높이 너비 설정하기위해
-        wm.copyFrom(sd.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
-        wm.width = width;  //화면 너비의 절반
-        wm.height = height/2;  //화면 높이의 절반
         clSearchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

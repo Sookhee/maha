@@ -153,6 +153,7 @@
                     android:fontFamily="@font/notosanscjkkr_regular"
                     android:hint="제목을 입력하세요."
                     android:includeFontPadding="false"
+                    android:inputType="text"
                     android:textColor="@color/black"
                     android:textColorHint="@color/warm_gray"
                     android:textSize="16sp" />

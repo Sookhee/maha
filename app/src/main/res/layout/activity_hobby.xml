@@ -196,31 +196,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.loopeer.shadow.ShadowView
-                android:id="@+id/hobbyAdd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
-                android:visibility="visible"
-                app:cornerRadius="5dp">
-
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:background="@color/purple"
-                    android:fontFamily="@font/notosanscjkkr_medium"
-                    android:includeFontPadding="false"
-                    android:stateListAnimator="@null"
-                    android:text="나의 취미에 추가하기"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-
-            </com.loopeer.shadow.ShadowView>
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clSearchBar"
                 android:layout_width="match_parent"
